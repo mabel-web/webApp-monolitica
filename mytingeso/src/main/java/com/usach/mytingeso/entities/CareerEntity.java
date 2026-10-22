@@ -17,10 +17,17 @@ public class CareerEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Long careerId;
+    private String code;
 
     @Column(nullable = false, unique = true)
-    private String nameCareer;
+    private String name;
+
+
     private String description;
-    private boolean active; //inicialmente activa
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CareerStatus status; //inicialmente activa
+
+    private int durationSemesters;
 }
