@@ -8,9 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "subjets", uniqueConstraints = @UniqueConstraint(columnNames = {"study_plan_id", "code"}))
-@NoArgsConstructor
+@Table(name = "subjects", uniqueConstraints = @UniqueConstraint(columnNames = {"study_plan_id", "code"}))
 @Data
+@NoArgsConstructor
+
 public class SubjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +19,8 @@ public class SubjectEntity {
 
     @Column(nullable = false)
     private String code;
+
+    private String name;
 
     @Column(nullable = false)
     private int semester;
@@ -34,9 +37,10 @@ public class SubjectEntity {
     private StudyPlanEntity studyPlan;
 
     @ManyToMany
-    @JoinTable(name = "subjetc_prerequesites",
+    @JoinTable(name = "subject_prerequisites",
             joinColumns = @JoinColumn(name = "subject_id"),
     inverseJoinColumns = @JoinColumn(name = "prerequisite_id"))
-    private Set<SubjectEntity> prerequesites = new HashSet<>(); //no entiendo esta linea
+    private Set<SubjectEntity> prerequisites = new HashSet<>(); //no entiendo esta linea
+
 
 }

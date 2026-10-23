@@ -16,6 +16,23 @@ public class EnrollmentEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id")
     private StudentEntity student;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "subject_id")
+    private SubjectEntity subject;
+
     @Column(nullable = false)
     private String period;
+
+    //los datos que guardar al momento de inscribir
+    @Column(nullable = false)
+    private String subjectCode;
+    @Column (nullable = false)
+    private String subjectName;
+    @Column(nullable = false)
+    private int subjectSct;
+
+    private Double finalGrade;
+
+
 }

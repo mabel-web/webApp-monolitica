@@ -1,9 +1,6 @@
 package com.usach.mytingeso.controllers;
 
-import com.usach.mytingeso.dto.EnrollmentResponse;
-import com.usach.mytingeso.dto.StudentCreateRequest;
-import com.usach.mytingeso.dto.StudentStateRequest;
-import com.usach.mytingeso.dto.StudentUpdateRequest;
+import com.usach.mytingeso.dto.*;
 import com.usach.mytingeso.entities.StudentEntity;
 import com.usach.mytingeso.services.StudentService;
 import jakarta.validation.Valid;
@@ -53,6 +50,12 @@ public class StudentController {
     @GetMapping("/{id}/academic-history")
     public ResponseEntity<List<EnrollmentResponse>> academicHistory(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.findAcademicHistory(id));
+    }
+
+    @PostMapping("/{id}/enrollments")
+    public ResponseEntity<EnrollmentResponse> enroll(@PathVariable Long id,
+                                                     @Valid @RequestBody EnrollmentCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.enroll(id, request));
     }
 
 }

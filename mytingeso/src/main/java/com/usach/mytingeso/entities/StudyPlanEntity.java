@@ -14,7 +14,7 @@ public class StudyPlanEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String year;       //code "2024"
+    private String code;       //code "2024"
 
     @Column(nullable = false)
     private String name;

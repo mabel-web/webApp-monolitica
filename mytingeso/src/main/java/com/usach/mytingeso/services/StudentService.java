@@ -1,20 +1,17 @@
 package com.usach.mytingeso.services;
 
+import com.usach.mytingeso.dto.EnrollmentCreateRequest;
 import com.usach.mytingeso.dto.EnrollmentResponse;
 import com.usach.mytingeso.dto.StudentCreateRequest;
 import com.usach.mytingeso.dto.StudentUpdateRequest;
 import com.usach.mytingeso.entities.*;
-import com.usach.mytingeso.repositories.CareerRepository;
-import com.usach.mytingeso.repositories.StudentRepository;
-import com.usach.mytingeso.repositories.StudyPlanRepository;
-import com.usach.mytingeso.repositories.UserRepository;
+import com.usach.mytingeso.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.usach.mytingeso.utils.RunUtils;
 import org.springframework.transaction.annotation.Transactional;
-import com.usach.mytingeso.repositories.EnrollmentRepository;
 
 import java.util.List;
 
@@ -26,6 +23,7 @@ public class StudentService {
     private final CareerRepository careerRepository;
     private final StudyPlanRepository studyPlanRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final SubjectRepository subjectRepository;
 
     public List<StudentEntity> findAll() {
         return studentRepository.findAll();
@@ -120,8 +118,32 @@ public class StudentService {
     public List<EnrollmentResponse> findAcademicHistory(Long studentId) {
         findById(studentId);   // throws 404 if the student does not exist
         return enrollmentRepository.findByStudentId(studentId).stream()
-                .map(e -> new EnrollmentResponse(e.getId(), e.getPeriod()))
+                .map(e -> new EnrollmentResponse(e.getId(), e.getPeriod(), e.getSubjectCode(), e.getSubjectName(), e.getSubjectSct(), e.getFinalGrade()))
                 .toList();
+    }
+
+    @Transactional
+    public EnrollmentResponse enroll(Long studentId, EnrollmentCreateRequest request){
+        StudentEntity student = findById(studentId);
+        SubjectEntity subject = subjectRepository.findById(request.subjectId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La asignatura no se encontró.") );
+
+    if (!subject.getStudyPlan().getId().equals(student.getStudyPlan().getId())){
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esta asignatura no pertenece al plan de estudio del estudiante.");
+    }
+    EnrollmentEntity e = new EnrollmentEntity();
+    e.setStudent(student);
+    e.setSubject(subject);
+    e.setPeriod(request.period().trim());
+    e.setSubjectCode(subject.getCode());
+    e.setSubjectName(subject.getName());
+    e.setSubjectSct(subject.getSct());
+    e.setFinalGrade(request.finalGrade());
+    EnrollmentEntity saved = enrollmentRepository.save(e);
+
+    return new EnrollmentResponse(saved.getId(), saved.getPeriod(), saved.getSubjectCode(),
+            saved.getSubjectName(), saved.getSubjectSct(), saved.getFinalGrade());
+
     }
 
     //helpers

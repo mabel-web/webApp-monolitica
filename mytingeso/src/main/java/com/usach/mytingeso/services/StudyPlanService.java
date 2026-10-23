@@ -1,6 +1,7 @@
 package com.usach.mytingeso.services;
 
 import com.usach.mytingeso.dto.StudyPlanCreateRequest;
+import com.usach.mytingeso.dto.SubjectCreateRequest;
 import com.usach.mytingeso.dto.SubjectResponse;
 import com.usach.mytingeso.entities.CareerEntity;
 import com.usach.mytingeso.entities.StudyPlanEntity;
@@ -48,7 +49,7 @@ public class StudyPlanService {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "El codigo del plan de estudios ya existe en la carrera");
     }
     if (request.current()){
-        unsetCurretPlan(careerId);
+        unsetCurrentPlan(careerId);
     }
 
     StudyPlanEntity plan = new StudyPlanEntity();

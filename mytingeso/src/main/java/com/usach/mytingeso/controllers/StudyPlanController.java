@@ -1,8 +1,6 @@
 package com.usach.mytingeso.controllers;
 
 import com.usach.mytingeso.dto.StudyPlanCreateRequest;
-import com.usach.mytingeso.dto.SubjectCreateRequest;
-import com.usach.mytingeso.dto.SubjectResponse;
 import com.usach.mytingeso.entities.StudyPlanEntity;
 import com.usach.mytingeso.services.StudyPlanService;
 import jakarta.validation.Valid;
@@ -45,17 +43,6 @@ public class StudyPlanController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/study-plans/{id}/subjects")
-    public ResponseEntity<List<SubjectResponse>> findSubjects(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findSubjects(id));
-    }
-
-    @PostMapping("/study-plans/{id}/subjects")
-    public ResponseEntity<SubjectResponse> addSubject(@PathVariable Long id,
-                                                      @Valid @RequestBody SubjectCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.addSubject(id, request));
     }
 
 

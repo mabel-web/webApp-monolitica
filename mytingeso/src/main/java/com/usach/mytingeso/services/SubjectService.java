@@ -5,9 +5,10 @@ import com.usach.mytingeso.dto.SubjectResponse;
 import com.usach.mytingeso.dto.SubjectUpdateRequest;
 import com.usach.mytingeso.entities.StudyPlanEntity;
 import com.usach.mytingeso.entities.SubjectEntity;
+import com.usach.mytingeso.repositories.EnrollmentRepository;
 import com.usach.mytingeso.repositories.StudyPlanRepository;
 import com.usach.mytingeso.repositories.SubjectRepository;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +18,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
     private final StudyPlanRepository studyPlanRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     public List<SubjectResponse> findByPlan(Long planId){
         findPlan(planId);
@@ -39,20 +41,20 @@ public class SubjectService {
             throw  new ResponseStatusException(HttpStatus.CONFLICT, "El codigo de esta asignatura ya existe en el plan");
         }
 
-        validateHoursAndPrerequisiteCount(r.theoryHours, r.exerciseHours(), r.labHours(), r.prerequesiteCodes());
+        validateHoursAndPrerequisiteCount(r.theoryHours(), r.exerciseHours(), r.labHours(), r.prerequisiteCodes());
 
         SubjectEntity s = new SubjectEntity();
         s.setCode(code);
         s.setStudyPlan(plan);
-        apply(s, r.name(), r.semester(), r.theoryHours(), r.exerciseHours(), r.labHours(), r.sct(), r.prerequesiteCodes());
+        apply(s, r.name(), r.semester(), r.theoryHours(), r.exerciseHours(), r.labHours(), r.sct(), r.prerequisiteCodes());
         return toResponse(subjectRepository.save(s));
     }
 
     @Transactional
     public SubjectResponse update(Long id, SubjectUpdateRequest r){
         SubjectEntity s = findSubject(id);
-        validateHoursAndPrerequisiteCount(r.theoryHours, r.exerciseHours(), r.labHours(), r.prerequesiteCodes());
-        apply(s, r.name(), r.semester(), r.theoryHours(), r.exerciseHours(), r.labHours(), r.sct(), r.prerequesiteCodes());
+        validateHoursAndPrerequisiteCount(r.theoryHours(), r.exerciseHours(), r.labHours(), r.prerequisiteCodes());
+        apply(s, r.name(), r.semester(), r.theoryHours(), r.exerciseHours(), r.labHours(), r.sct(), r.prerequisiteCodes());
         return toResponse(subjectRepository.save(s));
     }
     @Transactional
@@ -67,6 +69,7 @@ public class SubjectService {
                     "Esta asignatura es prerequisito de otras asignaturas.");
         }
         subjectRepository.delete(s);
+    }
 
         private void validateHoursAndPrerequisiteCount(int t, int e, int l, List<String> prereqs) {
             if (t + e + l >= 8) {
@@ -102,9 +105,8 @@ public class SubjectService {
             }
         }
 
-        // TODO: return gradeRecordRepository.existsBySubjectId(subjectId); when history exists
         private boolean isInAcademicHistory(Long subjectId) {
-            return false;
+            return enrollmentRepository.existsBySubjectId(subjectId);
         }
 
         private StudyPlanEntity findPlan(Long id) {
@@ -124,5 +126,4 @@ public class SubjectService {
         }
 
 
-}
 }

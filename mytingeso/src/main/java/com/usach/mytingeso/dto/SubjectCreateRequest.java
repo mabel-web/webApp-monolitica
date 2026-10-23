@@ -14,6 +14,6 @@ public record SubjectCreateRequest(
         @Min(0) int exerciseHours,
         @Min(0) int labHours,
         @Min(1) @Max(7) int sct,
-        List<String> prerequesiteCodes
+        List<String> prerequisiteCodes
 ) {
 }
