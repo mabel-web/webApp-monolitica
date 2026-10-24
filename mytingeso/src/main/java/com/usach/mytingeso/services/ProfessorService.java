@@ -2,9 +2,11 @@ package com.usach.mytingeso.services;
 
 import com.usach.mytingeso.dto.ProfessorCreateRequest;
 import com.usach.mytingeso.dto.ProfessorUpdateRequest;
+import com.usach.mytingeso.entities.PeriodStatus;
 import com.usach.mytingeso.entities.ProfessorEntity;
 import com.usach.mytingeso.entities.ProfessorStatus;
 import com.usach.mytingeso.repositories.ProfessorRepository;
+import com.usach.mytingeso.repositories.SectionRepository;
 import com.usach.mytingeso.repositories.UserRepository;
 import com.usach.mytingeso.utils.RunUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class ProfessorService{
 
     private final ProfessorRepository professorRepository;
     private final UserRepository userRepository;
+    private final SectionRepository sectionRepository;
     public List<ProfessorEntity> findAll(){
         return professorRepository.findAll();
     }
@@ -87,16 +90,13 @@ public class ProfessorService{
         }
         professorRepository.delete(professor);
     }
-    // ---- provisional helpers (replace when sections exist) ----
 
-    // TODO: return sectionRepository.existsByProfessorId(professorId);
     private boolean hasSections(Long professorId) {
-        return false;
+        return sectionRepository.existsByProfessorId(professorId);
     }
 
-    // TODO: return sectionRepository.existsByProfessorIdAndAcademicPeriodStatus(professorId, PeriodStatus.ABIERTO);
     private boolean hasSectionsInOpenPeriod(Long professorId) {
-        return false;
+        return sectionRepository.existsByProfessorIdAndPeriodStatus(professorId, PeriodStatus.ABIERTO);
     }
 
 
