@@ -4,10 +4,7 @@ import com.usach.mytingeso.dto.SectionCreateRequest;
 import com.usach.mytingeso.dto.SectionResponse;
 import com.usach.mytingeso.dto.SectionUpdateRequest;
 import com.usach.mytingeso.entities.*;
-import com.usach.mytingeso.repositories.AcademicPeriodRepository;
-import com.usach.mytingeso.repositories.ProfessorRepository;
-import com.usach.mytingeso.repositories.SectionRepository;
-import com.usach.mytingeso.repositories.SubjectRepository;
+import com.usach.mytingeso.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,6 +24,7 @@ public class SectionService {
     private final AcademicPeriodRepository periodRepository;
     private final SubjectRepository subjectRepository;
     private final ProfessorRepository professorRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     @Transactional(readOnly = true)
     public List<SectionResponse> findByPeriod(Long periodId){
@@ -93,10 +91,12 @@ public class SectionService {
     @Transactional
     public void delete(Long id) {
         SectionEntity section = findSection(id);
-        // RN-11
+        //
         if (countEnrolled(id) > 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Section has enrolled students and cannot be deleted");
+                    "La sección tiene estudiantes inscritos/as y no puede ser elimanda.");
+        } if (enrollmentRepository.existsBySubjectId(id)){
+            throw  new ResponseStatusException(HttpStatus.CONFLICT, "La sección tiene historial de inscripciones y no puede ser eliminada.");
         }
         sectionRepository.delete(section);
     }
@@ -163,9 +163,9 @@ public class SectionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sección no encontrada."));
     }
 
-    // TODO (epic 6): enrollmentRepository.countBySectionId(sectionId)
+    // epica 6)
     private int countEnrolled(Long sectionId) {
-        return 0;
+        return (int) enrollmentRepository.countBySectionIdAndStatus(sectionId, EnrollmentStatus.ACTIVA);
     }
 
     private SectionResponse toResponse(SectionEntity s) {

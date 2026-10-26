@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "enrollments")
 @Data
@@ -21,8 +23,13 @@ public class EnrollmentEntity {
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
 
-    @Column(nullable = false)
-    private String period;
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private SectionEntity section;
+
+    @ManyToOne
+    @JoinColumn(name = "period_id")
+    private AcademicPeriodEntity period;
 
     //los datos que guardar al momento de inscribir
     @Column(nullable = false)
@@ -33,6 +40,13 @@ public class EnrollmentEntity {
     private int subjectSct;
 
     private Double finalGrade;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime enrolledAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EnrollmentStatus status;
 
 
 }

@@ -52,10 +52,5 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findAcademicHistory(id));
     }
 
-    @PostMapping("/{id}/enrollments")
-    public ResponseEntity<EnrollmentResponse> enroll(@PathVariable Long id,
-                                                     @Valid @RequestBody EnrollmentCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.enroll(id, request));
-    }
 
 }
