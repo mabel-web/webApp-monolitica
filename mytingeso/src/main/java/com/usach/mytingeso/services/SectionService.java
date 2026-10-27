@@ -128,14 +128,14 @@ public class SectionService {
     }
 
     private void checkProfessorConflicts(Long professorId, Long periodId,
-                                         Set<String> schedules, Long excludeSectionId) {
+                                         Set<String> newSchedules, Long excludeSectionId) {
         for (SectionEntity other : sectionRepository.findByProfessorIdAndPeriodId(professorId, periodId)) {
-            if (other.getId().equals(excludeSectionId)) continue;
-            for (String schedule : other.getSchedule()) {
-                if (schedule.contains(schedule)) {
+            if (excludeSectionId != null && other.getId().equals(excludeSectionId)) continue;
+            for (String existing : other.getSchedule()) {
+                if (newSchedules.contains(existing)) {
                     throw new ResponseStatusException(HttpStatus.CONFLICT,
                             "Professor already has section " + other.getSubject().getCode()
-                                    + " at block " + schedule);
+                                    + " at block " + existing);
                 }
             }
         }

@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import com.usach.mytingeso.enums.EnrollmentStatus;
 import com.usach.mytingeso.enums.PeriodStatus;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -165,6 +167,8 @@ public class EnrollmentService {
                 e.setStudent(student);
                 e.setSubject(sec.getSubject());
                 e.setSection(sec);
+                e.setPeriod(period);
+                e.setEnrolledAt(LocalDateTime.now());
                 e.setSubjectCode(sec.getSubject().getCode());
                 e.setSubjectName(sec.getSubject().getName());
                 e.setSubjectSct(sec.getSubject().getSct());
