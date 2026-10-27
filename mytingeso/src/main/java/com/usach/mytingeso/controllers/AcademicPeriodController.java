@@ -1,7 +1,6 @@
 package com.usach.mytingeso.controllers;
 
 import com.usach.mytingeso.dto.PeriodCreateRequest;
-import com.usach.mytingeso.dto.PeriodStatusRequest;
 import com.usach.mytingeso.entities.AcademicPeriodEntity;
 import com.usach.mytingeso.services.AcademicPeriodService;
 import jakarta.validation.Valid;
@@ -33,9 +32,4 @@ public class AcademicPeriodController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<AcademicPeriodEntity> changeStatus(@PathVariable Long id,
-                                                             @Valid @RequestBody PeriodStatusRequest request) {
-        return ResponseEntity.ok(service.changeStatus(id, request.status()));
-    }
 }

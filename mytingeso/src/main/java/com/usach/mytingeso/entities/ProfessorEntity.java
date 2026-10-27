@@ -1,5 +1,6 @@
 package com.usach.mytingeso.entities;
 
+import com.usach.mytingeso.enums.ProfessorStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,4 @@ public class ProfessorEntity extends UserEntity{
     @Column(nullable = false)
     private ProfessorStatus status; //true es activo, false inactivo
 
-    private String responsibleSection;
 }

@@ -1,6 +1,6 @@
 package com.usach.mytingeso.dto;
 
-import com.usach.mytingeso.entities.ProfessorStatus;
+import com.usach.mytingeso.enums.ProfessorStatus;
 import jakarta.validation.constraints.NotNull;
 
 public record ProfessorStatusRequest(

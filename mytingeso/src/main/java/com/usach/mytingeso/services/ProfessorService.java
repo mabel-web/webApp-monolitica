@@ -2,9 +2,9 @@ package com.usach.mytingeso.services;
 
 import com.usach.mytingeso.dto.ProfessorCreateRequest;
 import com.usach.mytingeso.dto.ProfessorUpdateRequest;
-import com.usach.mytingeso.entities.PeriodStatus;
+import com.usach.mytingeso.enums.PeriodStatus;
 import com.usach.mytingeso.entities.ProfessorEntity;
-import com.usach.mytingeso.entities.ProfessorStatus;
+import com.usach.mytingeso.enums.ProfessorStatus;
 import com.usach.mytingeso.repositories.ProfessorRepository;
 import com.usach.mytingeso.repositories.SectionRepository;
 import com.usach.mytingeso.repositories.UserRepository;

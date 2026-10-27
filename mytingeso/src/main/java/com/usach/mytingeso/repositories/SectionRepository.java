@@ -1,6 +1,6 @@
 package com.usach.mytingeso.repositories;
 
-import com.usach.mytingeso.entities.PeriodStatus;
+import com.usach.mytingeso.enums.PeriodStatus;
 import com.usach.mytingeso.entities.SectionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,5 +1,7 @@
 package com.usach.mytingeso.entities;
 
+import com.usach.mytingeso.enums.EnrollmentResult;
+import com.usach.mytingeso.enums.EnrollmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,6 +49,11 @@ public class EnrollmentEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EnrollmentStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private EnrollmentResult result;
+
+    private LocalDateTime consolidatedAt;
 
 
 }

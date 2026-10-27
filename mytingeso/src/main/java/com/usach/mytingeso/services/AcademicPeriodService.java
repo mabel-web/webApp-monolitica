@@ -2,7 +2,7 @@ package com.usach.mytingeso.services;
 
 import com.usach.mytingeso.dto.PeriodCreateRequest;
 import com.usach.mytingeso.entities.AcademicPeriodEntity;
-import com.usach.mytingeso.entities.PeriodStatus;
+import com.usach.mytingeso.enums.PeriodStatus;
 import com.usach.mytingeso.repositories.AcademicPeriodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,12 +37,5 @@ public class AcademicPeriodService {
          period.setStatus(PeriodStatus.ABIERTO);
          return periodRepository.save(period);
 
-     }
-
-     @Transactional
-    public AcademicPeriodEntity changeStatus(Long id, PeriodStatus status){
-         AcademicPeriodEntity period = findById(id);
-         period.setStatus(status);
-         return periodRepository.save(period);
      }
 }

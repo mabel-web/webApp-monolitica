@@ -1,5 +1,6 @@
 package com.usach.mytingeso.entities;
 
+import com.usach.mytingeso.enums.AcademicState;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

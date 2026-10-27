@@ -5,14 +5,15 @@ import com.usach.mytingeso.dto.EnrollmentRequest;
 import com.usach.mytingeso.dto.EnrollmentResponse;
 import com.usach.mytingeso.dto.MatriculationResponse;
 import com.usach.mytingeso.entities.*;
+import com.usach.mytingeso.enums.AcademicState;
 import com.usach.mytingeso.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import com.usach.mytingeso.entities.EnrollmentStatus;
-import com.usach.mytingeso.entities.PeriodStatus;
+import com.usach.mytingeso.enums.EnrollmentStatus;
+import com.usach.mytingeso.enums.PeriodStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -191,17 +192,6 @@ public class EnrollmentService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Las inscripciones con notas no pueden ser anuladas");
         }
         e.setStatus(EnrollmentStatus.ANULADA);
-        return EnrollmentResponse.from(enrollmentRepository.save(e));
-    }
-
-    //
-    @Transactional
-    public EnrollmentResponse setGrade(Long enrollmentId, Double grade){
-        EnrollmentEntity e = findEnrollment(enrollmentId);
-        if (e.getStatus() != EnrollmentStatus.ACTIVA){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Inscripcion anulada.");
-        }
-        e.setFinalGrade(grade);
         return EnrollmentResponse.from(enrollmentRepository.save(e));
     }
 

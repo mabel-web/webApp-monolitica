@@ -1,4 +1,4 @@
-package com.usach.mytingeso.entities;
+package com.usach.mytingeso.enums;
 
 public enum AcademicState {
     REGULAR,

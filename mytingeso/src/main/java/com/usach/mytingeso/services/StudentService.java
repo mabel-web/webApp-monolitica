@@ -4,6 +4,8 @@ import com.usach.mytingeso.dto.EnrollmentResponse;
 import com.usach.mytingeso.dto.StudentCreateRequest;
 import com.usach.mytingeso.dto.StudentUpdateRequest;
 import com.usach.mytingeso.entities.*;
+import com.usach.mytingeso.enums.AcademicState;
+import com.usach.mytingeso.enums.CareerStatus;
 import com.usach.mytingeso.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

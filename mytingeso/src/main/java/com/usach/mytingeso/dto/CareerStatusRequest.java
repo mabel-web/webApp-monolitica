@@ -1,6 +1,6 @@
 package com.usach.mytingeso.dto;
 
-import com.usach.mytingeso.entities.CareerStatus;
+import com.usach.mytingeso.enums.CareerStatus;
 import jakarta.validation.constraints.NotNull;
 
 public record CareerStatusRequest(

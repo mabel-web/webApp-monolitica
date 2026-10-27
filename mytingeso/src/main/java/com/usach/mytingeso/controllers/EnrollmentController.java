@@ -42,10 +42,4 @@ public class EnrollmentController {
         return ResponseEntity.ok(service.annul(studentId, enrollmentId));
     }
 
-    //
-    @PutMapping("/enrollments/{id}/grade")
-    public ResponseEntity<EnrollmentResponse> grade(@PathVariable Long id,
-                                                    @Valid @RequestBody GradeRequest request) {
-        return ResponseEntity.ok(service.setGrade(id, request.finalGrade()));
-    }
 }

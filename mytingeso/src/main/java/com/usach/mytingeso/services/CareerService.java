@@ -4,7 +4,7 @@ package com.usach.mytingeso.services;
 import com.usach.mytingeso.dto.CareerCreateRequest;
 import com.usach.mytingeso.dto.CareerUpdateRequest;
 import com.usach.mytingeso.entities.CareerEntity;
-import com.usach.mytingeso.entities.CareerStatus;
+import com.usach.mytingeso.enums.CareerStatus;
 import com.usach.mytingeso.repositories.CareerRepository;
 import com.usach.mytingeso.repositories.StudentRepository;
 import com.usach.mytingeso.repositories.StudyPlanRepository;

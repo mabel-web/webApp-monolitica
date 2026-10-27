@@ -1,5 +1,6 @@
 package com.usach.mytingeso.entities;
 
+import com.usach.mytingeso.enums.CareerStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
