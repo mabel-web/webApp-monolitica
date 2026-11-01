@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, TextField, MenuItem, Button, Alert, Typografhy } from "@mui/material";
+import { Box, TextField, MenuItem, Button, Alert, Typography } from "@mui/material";
 import studentService from "../services/student.service";
 import careerService from "../services/career.service";
+import {errorMessage} from "../utils/errors";
 
 export default function AddEditStudent(){
     const { id } = useParams();
@@ -16,12 +17,12 @@ export default function AddEditStudent(){
     const [plans, setPlans] = useState([]);
     const [error, setError] = useState("");
 
-    const showError  = (e) => setError(e.response?.data?.message ?? "No se pudo conectar con el servidor");
+    const showError  = (e) => setError(errorMessage(e));
 
-    const change = (e) => ({ ...form, [e.target.name]: e.target.value });
+    const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
     useEffect(() => {
-        careerService.getAll().then((r) => setCareers(r.data)),catch(showError);
+        careerService.getAll().then((r) => setCareers(r.data)).catch(showError);
         if (editing){
             studentService.get(id).then((r) => {
                 const s = r.data;
@@ -30,7 +31,7 @@ export default function AddEditStudent(){
                     });
         }).catch(showError);
     }
-}. [id]);
+}, [id]);
 
 useEffect(() => {
     if (editing && form.careerId){
@@ -44,7 +45,7 @@ const save = (e) => {
     const request = editing
     ? studentService.update(id, {
         fullName: form.fullName, email: form.email, careerId: Number(form.careerId),
-        });
+        })
     : studentService.create({
         run: form.run, fullName: form.fullName, email: form.email, careerId: Number(form.careerId),
         });

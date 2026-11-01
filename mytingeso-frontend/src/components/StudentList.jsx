@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { errorMessage } from "../utils/errors";
 import { Link } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 import {
     Table, TableHead, TableRow, TableCell, TableBody, Button, Select,
     MenuItem, Alert, Box, Typography, } from "@mui/material";
@@ -8,13 +10,13 @@ import studentService from "../services/student.service";
 const STATES = ["REGULAR", "POSTERGACION", "RETIRO_TEMPORAL"];
 
 export default function StudentList(){
-    const [students, setStudents] =- useState([]);
+    const { keycloak} = useKeycloak();
+    const isAdmin = keycloak.hasRealmRole("ACADEMIC_ADMIN");
+    const [students, setStudents] = useState([]);
     const [error, setError] = useState("");
 
-
+   const showError = (e) => setError(errorMessage(e));
    const load = () => studentService.getAll().then((r) => setStudents(r.data)).catch(showError);
-
-   const showError = (e) => setError(e.response?.data?.message ?? "No se pudo conectar con el servidor");
 
    useEffect(() => { load(); }, []);
 
@@ -33,7 +35,9 @@ export default function StudentList(){
        <Box>
          <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
            <Typography variant="h5">Estudiantes</Typography>
+           {isAdmin && (
            <Button variant="contained" component={Link} to="/students/new">Nuevo</Button>
+           )}
          </Box>
          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
          <Table size="small">
@@ -45,7 +49,7 @@ export default function StudentList(){
                <TableCell>Carrera</TableCell>
                <TableCell>Plan</TableCell>
                <TableCell>Estado</TableCell>
-               <TableCell>Acciones</TableCell>
+               {isAdmin && <TableCell>Acciones</TableCell>}
              </TableRow>
            </TableHead>
            <TableBody>
@@ -66,10 +70,12 @@ export default function StudentList(){
                      </Select>
                    )}
                  </TableCell>
+                 {isAdmin && (
                  <TableCell>
                    <Button size="small" component={Link} to={`/students/${s.id}/edit`}>Editar</Button>
                    <Button size="small" color="error" onClick={() => remove(s.id)}>Eliminar</Button>
                  </TableCell>
+                 )}
                </TableRow>
              ))}
            </TableBody>
